@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class ="container">
+    <div class="row">
+        {% load static %}
+        <div class="col p-3">
+            <img src="{% static 'img/author.jpg' %}" height="540" width="360" style="float:right" class="d-inline-block" alt="">
+            Я разработчик данного сайта. На момент разработки обучался в Московском техническом университете связи и информатики. Обучаюсь программированию на Python. Рад, что вы ознакомились с моим сайтов. :-)
+        </div>
+    </div>
+</div>
+{% endblock %}

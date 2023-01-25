@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class ="container">
+    <div class="row">
+        {% load static %}
+        <div class="col p-3">
+            В создании сайта использовался язык рограммирования Python, фреймворк Django, язык гипертекстовой разметки HTML, язык таблицы стилей CSS, а также набор инструментов Bootstrap.
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col p-3 d-flex justify-content-center">
+            <img src="{% static 'img/techs/bootstrap.jpg' %}" height="100" width="115" class="d-inline-block p-3" alt="">
+            <img src="{% static 'img/techs/python.jpg' %}" height="100" width="100" class="d-inline-block p-3" alt="">
+            <img src="{% static 'img/techs/html.jpg' %}" height="100" width="100" class="d-inline-block p-3" alt="">
+            <img src="{% static 'img/techs/django.jpg' %}" height="100" width="100" class="d-inline-block p-3" alt="">
+            <img src="{% static 'img/techs/css.jpg' %}" height="100" width="100" class="d-inline-block p-3" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
