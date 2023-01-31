@@ -46,7 +46,6 @@ def view_post(request, post_id):
 def create_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
