@@ -46,19 +46,19 @@ class PostViewTest(TestCase):
     def test_index_context(self):
         response = self.user.get(reverse('posts:index'))
         context = response.context.get('page_obj').object_list
-        posts = list(Post.objects.all())[-1:-11:-1]
+        posts = list(Post.objects.all())[:10]
         self.assertEqual(posts, context)
 
     def test_profile_context(self):
         response = self.user.get(reverse('posts:profile', kwargs={'username': self.author.username}))
         context = response.context.get('page_obj').object_list
-        posts = list(Post.objects.all())[-1:-11:-1]
+        posts = list(Post.objects.all())[:10]
         self.assertEqual(posts, context)
 
     def test_group_posts_context(self):
         response = self.user.get(reverse('posts:group_posts', kwargs={'slug': self.group.slug}))
         context = response.context.get('page_obj').object_list
-        posts = list(Post.objects.all())[-1:-11:-1]
+        posts = list(Post.objects.all())[:10]
         self.assertEqual(posts, context)
 
     def test_view_post_context(self):
@@ -132,7 +132,7 @@ class PaginatorTest(TestCase):
             reverse('posts:group_posts', kwargs={'slug': self.group.slug}),
             reverse('posts:profile', kwargs={'username': self.author.username})
         )
-        expected = list(Post.objects.order_by('-pub_date')[:10])
+        expected = list(Post.objects.all()[:10])
         for request in form_fields:
             response = self.user.get(request)
             posts = response.context.get('page_obj').object_list
@@ -144,7 +144,7 @@ class PaginatorTest(TestCase):
             reverse('posts:group_posts', kwargs={'slug': self.group.slug}) + '?page=2',
             reverse('posts:profile', kwargs={'username': self.author.username}) + '?page=2'
         )
-        expected = list(Post.objects.order_by('-pub_date')[10:20])
+        expected = list(Post.objects.all()[10:20])
         for request in form_fields:
             response = self.user.get(request)
             posts = response.context.get('page_obj').object_list
