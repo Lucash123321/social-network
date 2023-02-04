@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'sorl.thumbnail',
     'about.apps.AboutConfig',
     'core.apps.CoreConfig',
     'posts.apps.PostsConfig',
@@ -144,3 +145,5 @@ LOGIN_REDIRECT_URL = "posts:index"
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = path.join(BASE_DIR, "sent_emails")
 
+MEDIA_ROOT = path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

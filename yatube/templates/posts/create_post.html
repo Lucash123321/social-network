@@ -12,8 +12,7 @@
             <div class="card-header">Создайте свой пост</div>
             {% endif %}
             <div class="card-body">
-
-                <form method="post" >
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     {% for field in form %}
