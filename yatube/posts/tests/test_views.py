@@ -2,6 +2,7 @@ from django.test import Client, TestCase
 from posts.models import Group, User, Post
 from django.urls import reverse
 from django import forms
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class PostViewTest(TestCase):
@@ -11,18 +12,32 @@ class PostViewTest(TestCase):
         cls.group = Group.objects.create(
             title='Тестовая группа',
             description='Тестовое описание',
-            slug='test_group'
+            slug='test_group',
         )
         cls.author = User.objects.create_user(
             username='author'
         )
 
-        for number in range(1, 11):
+        for number in range(1, 10):
             cls.post = Post.objects.create(
                 group=Group.objects.get(slug='test_group'),
                 author=User.objects.get(username='author'),
                 text=f'Тестовый текст {number}'
             )
+
+        cls.image = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
+            b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
+            b'\x02\x4c\x01\x00\x3b'
+        )
+
+        cls.uploaded = SimpleUploadedFile('image.gif', cls.image)
+
+        cls.post = Post.objects.create(
+            group=Group.objects.get(slug='test_group'),
+            text='random_text',
+            author=User.objects.get(username='author'),
+            image=cls.uploaded)
 
     def setUp(self):
         self.user = Client()
@@ -105,6 +120,25 @@ class PostViewTest(TestCase):
             posts = response.context.get('page_obj').object_list
             self.assertIn(expected, posts)
 
+    def test_image_on_pages(self):
+
+        pages_includes_image = {
+            reverse('posts:index'),
+            reverse('posts:group_posts', kwargs={'slug': self.group.slug}),
+            reverse('posts:profile', kwargs={'username': self.author.username}),
+            }
+
+        for request in pages_includes_image:
+            with self.subTest(True):
+                response = self.user.get(request)
+                context = response.context['page_obj'][0]
+                self.assertEqual(context.image, self.post.image)
+
+    def test_image_in_post(self):
+        response = self.user.get(reverse('posts:view_post', kwargs={'post_id': self.post.id}))
+        context = response.context['post']
+        self.assertEqual(context.image, self.post.image)
+
 
 class PaginatorTest(TestCase):
     @classmethod
@@ -149,4 +183,3 @@ class PaginatorTest(TestCase):
             response = self.user.get(request)
             posts = response.context.get('page_obj').object_list
             self.assertEqual(expected, posts)
-

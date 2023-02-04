@@ -15,7 +15,7 @@ __pycache__/
 *.sublime-project
 *.sublime-workspace
 
-yatube/sent_emails
+sent_emails/
 media/
 
 
