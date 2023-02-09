@@ -18,6 +18,14 @@ class PostViewTest(TestCase):
             username='author'
         )
 
+        cls.follower = User.objects.create_user(
+            username='follower'
+        )
+
+        cls.user = User.objects.create_user(
+            username='user'
+        )
+
         for number in range(1, 10):
             cls.post = Post.objects.create(
                 group=Group.objects.get(slug='test_group'),
@@ -40,8 +48,14 @@ class PostViewTest(TestCase):
             image=cls.uploaded)
 
     def setUp(self):
-        self.user = Client()
-        self.user.force_login(self.author)
+        self.author_client = Client()
+        self.author_client.force_login(self.author)
+
+        self.follower_client = Client()
+        self.follower_client.force_login(self.follower)
+
+        self.user_client = Client()
+        self.user_client.force_login(self.user)
 
     def test_views(self):
         template_used = {
@@ -55,29 +69,29 @@ class PostViewTest(TestCase):
 
         for view, template in template_used.items():
             with self.subTest(True):
-                response = self.user.get(view)
+                response = self.author_client.get(view)
                 self.assertTemplateUsed(response, template)
 
     def test_index_context(self):
-        response = self.user.get(reverse('posts:index'))
+        response = self.author_client.get(reverse('posts:index'))
         context = response.context.get('page_obj').object_list
         posts = list(Post.objects.all())[:10]
         self.assertEqual(posts, context)
 
     def test_profile_context(self):
-        response = self.user.get(reverse('posts:profile', kwargs={'username': self.author.username}))
+        response = self.author_client.get(reverse('posts:profile', kwargs={'username': self.author.username}))
         context = response.context.get('page_obj').object_list
         posts = list(Post.objects.all())[:10]
         self.assertEqual(posts, context)
 
     def test_group_posts_context(self):
-        response = self.user.get(reverse('posts:group_posts', kwargs={'slug': self.group.slug}))
+        response = self.author_client.get(reverse('posts:group_posts', kwargs={'slug': self.group.slug}))
         context = response.context.get('page_obj').object_list
         posts = list(Post.objects.all())[:10]
         self.assertEqual(posts, context)
 
     def test_view_post_context(self):
-        response = self.user.get(reverse('posts:view_post', kwargs={'post_id': 5}))
+        response = self.author_client.get(reverse('posts:view_post', kwargs={'post_id': 5}))
         context_post = response.context.get('post')
         context_count = response.context.get('posts_count')
         database_count = Post.objects.filter(author=self.author.id).count()
@@ -86,7 +100,7 @@ class PostViewTest(TestCase):
         self.assertEqual(context_post, database_post)
 
     def test_create_post_context(self):
-        response = self.user.get(reverse('posts:create_post'))
+        response = self.author_client.get(reverse('posts:create_post'))
         form_fields = {
             'text': forms.fields.CharField,
             'group': forms.fields.ChoiceField
@@ -97,7 +111,7 @@ class PostViewTest(TestCase):
                 self.assertIsInstance(got, expected)
 
     def test_post_edit_context(self):
-        response = self.user.get(reverse('posts:post_edit', kwargs={'post_id': 5}))
+        response = self.author_client.get(reverse('posts:post_edit', kwargs={'post_id': 5}))
         form_fields = {
             'text': forms.fields.CharField,
             'group': forms.fields.ChoiceField
@@ -116,7 +130,7 @@ class PostViewTest(TestCase):
         }
 
         for request, expected in form_fields.items():
-            response = self.user.get(request)
+            response = self.author_client.get(request)
             posts = response.context.get('page_obj').object_list
             self.assertIn(expected, posts)
 
@@ -130,14 +144,26 @@ class PostViewTest(TestCase):
 
         for request in pages_includes_image:
             with self.subTest(True):
-                response = self.user.get(request)
+                response = self.author_client.get(request)
                 context = response.context['page_obj'][0]
                 self.assertEqual(context.image, self.post.image)
 
     def test_image_in_post(self):
-        response = self.user.get(reverse('posts:view_post', kwargs={'post_id': self.post.id}))
+        response = self.author_client.get(reverse('posts:view_post', kwargs={'post_id': self.post.id}))
         context = response.context['post']
         self.assertEqual(context.image, self.post.image)
+
+    def test_follow_page(self):
+
+        self.follower_client.get(reverse('posts:profile_follow', kwargs={'username': self.author}), follow=True)
+        author_posts = list(Post.objects.filter(author__following__user=self.follower))
+        response = self.follower_client.get(reverse('posts:follow_index'))
+        context = response.context.get('page_obj').object_list
+        self.assertEqual(context, author_posts)
+
+        response = self.user_client.get(reverse('posts:follow_index'))
+        context = list(response.context.get('page_obj'))
+        self.assertEqual(context, [])
 
 
 class PaginatorTest(TestCase):

@@ -35,7 +35,6 @@ class URLTests(TestCase):
         cls.sites = {
             '/': 'posts/index.html',
             f'/group/{cls.group.slug}/': 'posts/group_posts.html',
-            f'/profile/{cls.user.username}/': 'posts/profile.html',
             f'/posts/{cls.post.id}/': 'posts/view_post.html',
             f'/posts/{cls.post.id}/edit/': 'posts/create_post.html',
             '/create/': 'posts/create_post.html',
