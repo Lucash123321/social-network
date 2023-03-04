@@ -3,11 +3,11 @@ The project is based on a task from Yandex.Practicum. It is possible to create, 
 
 # Launch project in a dev-mode
 - Create and activate virtual environment
-- Install dependencies from requirements.txt file:\
+- Install dependencies from requirements.txt file:
 ```
 pip install -r requirements.txt
 ```
-- In folder with file manage.py execute a command:\
+- In folder with file manage.py execute a command:
 ```
 python3 manage.py runserver
 ```
