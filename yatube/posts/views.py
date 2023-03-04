@@ -58,7 +58,14 @@ def view_post(request, post_id):
     posts_count = Post.objects.select_related('author').filter(author__username=post.author.username).count()
     form = CommentForm()
     comments = Comment.objects.filter(post=post)
-    context = {'post': post, 'posts_count': posts_count, 'form': form, 'comments': comments}
+    followers = Follow.objects.filter(author=post.author.id).count()
+    following = Follow.objects.filter(user=request.user.id).count()
+    context = {'post': post,
+               'posts_count': posts_count,
+               'form': form,
+               'comments': comments,
+               'followers': followers,
+               'following': following}
     return render(request, 'posts/view_post.html', context)
 
 
