@@ -55,10 +55,14 @@ body{
     color: white;
 }
 
+.link:hover{
+    color: black;
+}
+
 .main-page{
     display: grid;
-    grid-template-columns: 200px 200px;
-    height: calc(100vh - 207px);
+    grid-template-columns: 200px auto;
+    min-height: calc(100vh - 207px);
 }
 
 .left-menu{
