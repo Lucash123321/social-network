@@ -1,0 +1,32 @@
+{% extends 'form-background.html' %}
+{% block content %}
+    <form method="POST" enctype="multipart/form-data" class="form">
+    {{ form.csrf_token }}
+    {% for field in form %}
+    <div class="input-box">
+        <label>{{ field.label_tag }}</label>
+        <div>{{ field }}</div>
+        {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="form-error">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <section class="non-field-errors">
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <div class="form-error">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+    </section>
+    <div class="form-buttons">
+        <button type="cancel" class="form-button" onclick="window.history.back();">Выйти</button>
+        {% if change %}
+        <button type="submit" class="form-button">Сохранить изменения</button>
+        {% else %}
+        <button type="submit" class="form-button">Создать объявление</button>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

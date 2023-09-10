@@ -1,12 +1,26 @@
-from flask import Blueprint, render_template, request
-from forms import PostForm
+from flask import render_template, request, Blueprint
+from .forms import PostForm
+from .models import Post
+from database import db
 
 
-posts = Blueprint("posts", __name__, template_folder="templates")
+posts_bp = Blueprint("posts", __name__, template_folder="templates")
 
 TEMPLATE_DIR = "posts/"
 
 
-@posts.route("/")
+@posts_bp.route("/")
 def index():
-    return render_template(TEMPLATE_DIR + "index.html", form=PostForm())
+    posts = Post.query.all()
+    return render_template(TEMPLATE_DIR + "index.html", posts=posts)
+
+
+@posts_bp.route("/create-post", methods=['POST', 'GET'])
+def create_post():
+    form = PostForm()
+    if request.method == 'POST':
+        post = Post(title=request.form['title'],
+                    text=request.form['text'])
+        db.session.add(post)
+        db.session.commit()
+    return render_template(TEMPLATE_DIR + "post-creation-form.html", form=form)

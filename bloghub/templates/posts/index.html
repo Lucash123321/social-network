@@ -10,7 +10,13 @@
             </ul>
         </div>
         <div class="posts">
-
+            {% for post in posts %}
+            <div class="post">
+                <div>{{ post.title }}</div>
+                <div>{{ post.text }}</div>
+                <hr>
+            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
