@@ -1,7 +1,4 @@
-from flask import Blueprint
 from database import db
-
-Blueprint("posts", __name__, template_folder="templates")
 
 
 class Post(db.Model):

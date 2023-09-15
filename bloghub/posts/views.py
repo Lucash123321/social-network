@@ -4,7 +4,7 @@ from .models import Post
 from database import db
 
 
-posts_bp = Blueprint("posts", __name__, template_folder="templates")
+posts_bp = Blueprint("posts", __name__, template_folder="../templates/posts")
 
 TEMPLATE_DIR = "posts/"
 
@@ -12,7 +12,7 @@ TEMPLATE_DIR = "posts/"
 @posts_bp.route("/")
 def index():
     posts = Post.query.all()
-    return render_template(TEMPLATE_DIR + "index.html", posts=posts)
+    return render_template("index.html", posts=posts)
 
 
 @posts_bp.route("/create-post", methods=['POST', 'GET'])
@@ -23,4 +23,4 @@ def create_post():
                     text=request.form['text'])
         db.session.add(post)
         db.session.commit()
-    return render_template(TEMPLATE_DIR + "post-creation-form.html", form=form)
+    return render_template("post-creation-form.html", form=form)
