@@ -16,16 +16,16 @@
         {% endif %}
     </div>
     {% endfor %}
-    <section class="non-field-errors">
+    <div class="non-field-errors">
         {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
         <div class="form-error">{{ error }}</div>
         {% endfor %}
         {% endif %}
-    </section>
+    </div>
     <div class="form-buttons">
         <button type="cancel" class="form-button" onclick="window.history.back();">Назад</button>
-        <button type="submit" class="form-button">Создать пост</button>
+        <button type="submit" class="form-button">Войти</button>
     </div>
 </form>
 {% endblock %}

@@ -1,22 +1,28 @@
-from flask import render_template, Blueprint, request
-from .forms import UserForm
+from flask import render_template, Blueprint, request, redirect, url_for
+from .forms import RegistrationForm, LoginForm
 from .models import User
 from database import db
+from flask_login import login_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 users_bp = Blueprint("users", __name__, template_folder="../templates/users")
 
 
+
+
 @users_bp.route("/register", methods=['POST', 'GET'])
 def user_register():
-    form = UserForm()
+    form = RegistrationForm()
     if request.method == "POST":
 
-        if not User.query.filter_by(username=request.form['username']) and \
-           not User.query.filter_by(email=request.form['email']):
+        if not list(User.query.filter_by(username=request.form.get('username'))) and \
+                not list(User.query.filter_by(email=request.form.get('email'))):
 
-            user = User(username=request.form['username'],
-                        email=request.form['email'],
-                        password=request.form['password'])
+            password = generate_password_hash(request.form.get('password'))
+
+            user = User(username=request.form.get('username'),
+                        email=request.form.get('email'),
+                        password=password)
 
             db.session.add(user)
             db.session.commit()
@@ -25,14 +31,30 @@ def user_register():
 
         else:
 
-            if User.query.filter_by(username=request.form['username']):
-                current_fild_errors = list(form.username.errors)
-                current_fild_errors.append("Это имя пользователя уже используется.")
-                form.username.errors = current_fild_errors
+            if list(User.query.filter_by(username=request.form.get('username'))):
+                current_field_errors = list(form.username.errors)
+                current_field_errors.append("Это имя пользователя уже используется.")
+                form.username.errors = current_field_errors
 
-            if User.query.filter_by(email=request.form['email']):
-                current_fild_errors = list(form.email.errors)
-                current_fild_errors.append("Эта почта уже зарегистрирована.")
-                form.email.errors = current_fild_errors
+            if list(User.query.filter_by(email=request.form.get('email'))):
+                current_field_errors = list(form.email.errors)
+                current_field_errors.append("Эта почта уже зарегистрирована.")
+                form.email.errors = current_field_errors
 
     return render_template("user-registration-form.html", form=form)
+
+
+@users_bp.route("/login", methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+
+    if request.method == "POST":
+
+        user = User.query.filter_by(username=request.form.get('username')).first()
+
+        if list(User.query.filter_by(username=request.form.get('username'), )) and \
+                check_password_hash(user.password, request.form.get('password')):
+            login_user(user)
+            return redirect(url_for('posts.index'))
+
+    return render_template("login.html", form=form)

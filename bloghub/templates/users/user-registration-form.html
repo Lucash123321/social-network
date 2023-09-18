@@ -1,25 +1,28 @@
 {% extends 'form-background.html' %}
 {% block content %}
-    <form method="POST" enctype="multipart/form-data" class="form">
+<form method="POST" enctype="multipart/form-data" class="form">
     {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
     {% for field in form %}
     <div class="input-box">
-        <label>{{ field.label_tag }}</label>
+        {% if field.widget.input_type != 'hidden' %}
+        <label>{{ field.label }}</label>
         <div>{{ field }}</div>
+        {% endif %}
         {% if field.errors %}
         {% for error in field.errors %}
-          <div class="form-error">{{ error }}</div>
+        <div class="form-error">{{ error }}</div>
         {% endfor %}
         {% endif %}
     </div>
     {% endfor %}
-    <section class="non-field-errors">
+    <div class="non-field-errors">
         {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
         <div class="form-error">{{ error }}</div>
         {% endfor %}
         {% endif %}
-    </section>
+    </div>
     <div class="form-buttons">
         <button type="cancel" class="form-button" onclick="window.history.back();">Назад</button>
         <button type="submit" class="form-button">Зарегистрироваться</button>
