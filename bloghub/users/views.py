@@ -2,16 +2,14 @@ from flask import render_template, Blueprint, request, redirect, url_for
 from .forms import RegistrationForm, LoginForm
 from .models import User
 from database import db
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 users_bp = Blueprint("users", __name__, template_folder="../templates/users")
 
 
-
-
 @users_bp.route("/register", methods=['POST', 'GET'])
-def user_register():
+def register():
     form = RegistrationForm()
     if request.method == "POST":
 
@@ -58,3 +56,10 @@ def login():
             return redirect(url_for('posts.index'))
 
     return render_template("login.html", form=form)
+
+
+@users_bp.route('/logout')
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+    return redirect(url_for('posts.index'))

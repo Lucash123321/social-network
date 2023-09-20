@@ -2,12 +2,14 @@
     padding: 0;
     margin: 0;
 }
+
 input{
 height:48px;
 border-radius: 10px;
 padding-top:10px;
 padding-bottom:10px;
 }
+
 body{
     line-height: 1.5;
     font-size: 1rem;
@@ -68,14 +70,23 @@ body{
     display: grid;
     grid-template-columns: 200px auto;
     min-height: calc(100vh - 207px);
+    background-color: #f5f5f5;
 }
 
 .left-menu{
     border-right: solid black 1px;
-    padding-left: 10px;
     text-decoration: none;
 }
 
-.list-item{
+.left-menu-item{
     list-style-type:none;
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: 5px;
+    padding-left: 50px;
+    border-radius: 5px;
+}
+
+.left-menu-item:hover{
+    background-color: white;
 }

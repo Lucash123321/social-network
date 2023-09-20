@@ -1,7 +1,9 @@
 from flask import render_template, request, Blueprint
-from .forms import PostForm
-from .models import Post
+from posts.forms import PostForm
+from posts.models import Post
 from database import db
+from users.models import User
+from flask_login import current_user
 
 
 posts_bp = Blueprint("posts", __name__, template_folder="../templates/posts")

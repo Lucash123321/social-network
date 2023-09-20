@@ -4,12 +4,12 @@
     </a>
     <nav>
         <ul class="menu">
-                <li><a href="">Мессенджер</a></li>
-                <li><a href="">Создать объявление</a></li>
-                <li><a href="">Профиль</a></li>
-                <li><a href="">Выйти</a></li>
-                <li><a href="">Войти</a></li>
-                <li><a href="">Зарегистрироваться</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('users.logout') }}">Выйти</a></li>
+            {% else %}
+                <li><a href="{{ url_for('users.login') }}">Войти</a></li>
+                <li><a href="{{ url_for('users.register') }}">Зарегистрироваться</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
