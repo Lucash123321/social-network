@@ -3,13 +3,6 @@
     margin: 0;
 }
 
-input{
-height:48px;
-border-radius: 10px;
-padding-top:10px;
-padding-bottom:10px;
-}
-
 body{
     line-height: 1.5;
     font-size: 1rem;
@@ -36,6 +29,7 @@ body{
     padding: 10px;
     box-sizing: border-box;
     border-bottom: 1px solid black;
+    padding-right: 20px;
 }
 
 .menu li{
@@ -74,7 +68,6 @@ body{
 }
 
 .left-menu{
-    border-right: solid black 1px;
     text-decoration: none;
 }
 
@@ -89,4 +82,124 @@ body{
 
 .left-menu-item:hover{
     background-color: white;
+}
+
+.form-background{
+    padding: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: blue;
+    margin: auto;
+    color: white;
+    border: 1px solid black;
+    border-radius: 30px;
+}
+
+.input-box input{
+    width: 500px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.input-box textarea{
+    resize: none;
+    width: 500px;
+    height: 200px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.form-buttons{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancel-button{
+    width: 150px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.submit-button{
+    width: 250px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.posts{
+    margin-right: 10px;
+}
+
+.post{
+    background-color: white;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.href{
+    text-decoration: none;
+    color: black;
+}
+
+.post-header{
+    color: grey;
+    font-size: 10px;
+    padding-left: 90%;
+}
+
+.post-title{
+    word-break: break-all;
+    font-size: 50px;
+    text-align: center;
+}
+
+.post-text{
+    word-break: break-all;
+}
+
+.form-error{
+    color: red;
+}
+
+.main-page-post-title{
+    word-break: break-all;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-picture{
+    width: 200px;
+    height: 200px;
+    clip-path: circle();
+    margin-top: 10px;
+}
+
+.profile-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.profile-header ul{
+    list-style: none;
+}
+
+.profile-href{
+    text-decoration: none;
+    color: grey;
+}
+
+.profile-href:hover{
+    color: blue;
+}
+
+.post-text{
+    text-indent: 30px;
+    padding-left: 5px;
 }

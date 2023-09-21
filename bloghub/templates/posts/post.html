@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="post">
+    <div class="post-title">{{ post.title }}</div>
+    <div class="post-header">
+        <a class="profile-href" href="{{ url_for('posts.profile', username=post.user.username) }}">
+            <div>{{ post.user.username }}</div>
+            <div>{{ post.time }}</div>
+        </a>
+    </div>
+    <div class="post-text">{{ post.text }}</div>
+</div>
+{% endblock %}

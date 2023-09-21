@@ -7,7 +7,7 @@
     <div class="input-box">
         {% if field.widget.input_type != 'hidden' %}
         <label>{{ field.label }}</label>
-        <div>{{ field }}</div>
+        <div class="field">{{ field }}</div>
         {% endif %}
         {% if field.errors %}
         {% for error in field.errors %}
@@ -16,16 +16,16 @@
         {% endif %}
     </div>
     {% endfor %}
-    <section class="non-field-errors">
+    <div class="non-field-errors">
         {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
         <div class="form-error">{{ error }}</div>
         {% endfor %}
         {% endif %}
-    </section>
+    </div>
     <div class="form-buttons">
-        <button type="cancel" class="form-button" onclick="window.history.back();">Назад</button>
-        <button type="submit" class="form-button">Создать пост</button>
+        <button type="button" class="cancel-button" onclick="window.history.back();">Назад</button>
+        <button type="submit" class="submit-button">Создать пост</button>
     </div>
 </form>
 {% endblock %}

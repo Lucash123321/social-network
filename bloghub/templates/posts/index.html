@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="main-page">
-        <div class="left-menu">
-            <ul class="left-menu-list">
-                <li class="left-menu-item">Профиль</li>
-                <li class="left-menu-item">Сообщения</li>
-                <li class="left-menu-item">Лента новостей</li>
-                <li class="left-menu-item">Подписки</li>
-            </ul>
-        </div>
-        <div class="posts">
-            {% for post in posts %}
-            <div class="post">
-                <div>{{ post.title }}</div>
-                <div>{{ post.text }}</div>
-                <hr>
+<div class="posts">
+    {% for post in posts %}
+    <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="href">
+        <div class="post">
+            <div class="main-page-post-title">{{ post.title }}</div>
+            <div class="post-header">
+                <div>{{ post.user.username }}</div>
+                <div>{{ post.time }}</div>
             </div>
-            {% endfor %}
+            {% if post.text|length > 200 %}
+            <div class="post-text">{{ post.text[:200] }}...</div>
+            {% else %}
+            <div class="post-text">{{ post.text }}</div>
+            {% endif %}
         </div>
-    </div>
+    </a>
+    {% endfor %}
+</div>
 {% endblock %}

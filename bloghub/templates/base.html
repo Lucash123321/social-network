@@ -6,11 +6,25 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    {% include "includes/header.html" %}
-    <main>
+{% include "includes/header.html" %}
+<main>
+    <div class="main-page">
+        <div class="left-menu">
+            <ul class="left-menu-list">
+                <li class="left-menu-item">
+                    <a class="href" href="{{ url_for('posts.profile', username=current_user.username) }}">Профиль</a>
+                </li>
+                <li class="left-menu-item">Сообщения</li>
+                <li class="left-menu-item">
+                    <a href="/" class="href">Лента новостей</a>
+                </li>
+                <li class="left-menu-item">Подписки</li>
+            </ul>
+        </div>
         {% block content %}
         {% endblock %}
-    </main>
-    {% include "includes/footer.html" %}
+    </div>
+</main>
+{% include "includes/footer.html" %}
 </body>
 </html>
