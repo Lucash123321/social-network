@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, url_for, redirect, abort
 from posts.forms import PostForm
-from posts.models import Post
+from posts.models import Post, Follow
 from users.models import User
 from database import db
 from flask_login import current_user, login_required
@@ -60,4 +60,52 @@ def profile(username):
 
     user = user.first()
     posts = Post.query.filter_by(user=user)
-    return render_template("profile.html", user=user, posts=posts)
+
+    if current_user.is_authenticated:
+        already_follow = bool(list(Follow.query.filter_by(user_id=user.id, follower_id=current_user.id)))
+    else:
+        already_follow = False
+
+    return render_template("profile.html", user=user, posts=posts, already_follow=already_follow)
+
+
+@posts_bp.route("/<username>/follow")
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username)
+    if not list(user):
+        return abort(404)
+
+    user = user.first()
+    if current_user.id == user.id or list(Follow.query.filter_by(user_id=user.id, follower_id=current_user.id)):
+        return abort(403)
+
+    follow = Follow(user_id=user.id, follower_id=current_user.id)
+    db.session.add(follow)
+    db.session.commit()
+
+    return redirect(url_for('posts.profile', username=user.username))
+
+
+@posts_bp.route("/<username>/unfollow")
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username)
+
+    if not list(user):
+        return abort(404)
+
+    user = user.first()
+
+    Follow.query.filter_by(user_id=user.id, follower_id=current_user.id).delete()
+    db.session.commit()
+
+    return redirect(url_for('posts.profile', username=user.username))
+
+
+@posts_bp.route("/followings")
+@login_required
+def followings():
+    followings = db.session.query(Follow.user_id).filter_by(follower_id=current_user.id)
+    posts = list(db.session.query(Post).filter(Post.user_id.in_(followings)))[::-1]
+    return render_template("index.html", posts=posts)

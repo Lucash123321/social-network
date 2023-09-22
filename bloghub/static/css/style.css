@@ -203,3 +203,11 @@ body{
     text-indent: 30px;
     padding-left: 5px;
 }
+
+.follow-button{
+    padding: 5px;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
