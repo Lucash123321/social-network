@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for message in messages %}
+    {{ message.user_from }}
+    {{ message.user_to }}
+    {{ message.text}}
+{% endfor %}
+<div class="message-form-container">
+    <form method="POST" action="{{ url_for('posts.send_message', username=username) }}" enctype="multipart/form-data"
+          class="message-form">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+        <div class="input-box">
+            {% if field.widget.input_type != 'hidden' %}
+            <div class="field">{{ field }}</div>
+            {% endif %}
+            {% if field.errors %}
+            {% for error in field.errors %}
+            <div class="form-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="non-field-errors">
+            {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <div class="form-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="submit-button">Отправить</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, url_for, redirect, abort
-from posts.forms import PostForm
-from posts.models import Post, Follow
+from posts.forms import PostForm, MessageForm
+from posts.models import Post, Follow, Message
 from users.models import User
 from database import db
 from flask_login import current_user, login_required
@@ -13,7 +13,7 @@ TEMPLATE_DIR = "posts/"
 @posts_bp.route("/")
 def index():
     posts = list(Post.query.all())[::-1]
-    return render_template("index.html", posts=posts)
+    return render_template("index.html", posts=posts, main=True)
 
 
 @posts_bp.route("/create-post", methods=['POST', 'GET'])
@@ -108,4 +108,43 @@ def unfollow(username):
 def followings():
     followings = db.session.query(Follow.user_id).filter_by(follower_id=current_user.id)
     posts = list(db.session.query(Post).filter(Post.user_id.in_(followings)))[::-1]
-    return render_template("index.html", posts=posts)
+    return render_template("index.html", posts=posts, followings=True)
+
+
+@posts_bp.route("/messanger/<username>/send-message", methods=['POST', 'GET'])
+@login_required
+def send_message(username):
+    user_to = User.query.filter_by(username=username).first()
+
+    if not user_to:
+        return abort(404)
+
+    if request.method == 'POST':
+        if request.form.get('text'):
+            message = Message(user_from_id=current_user.id,
+                              user_to_id=user_to.id,
+                              text=request.form.get('text'))
+            db.session.add(message)
+            db.session.commit()
+
+    return redirect(url_for('posts.chat', username=user_to.username))
+
+
+@posts_bp.route('/messanger/<username>')
+@login_required
+def chat(username):
+    form = MessageForm()
+    user_to = User.query.filter_by(username=username).first()
+
+    if not user_to:
+        return abort(404)
+
+    messages = Message.query.filter_by(user_to_id=user_to.id, user_from_id=current_user.id)
+
+    return render_template("chat.html", messages=messages, username=username, form=form)
+
+
+@posts_bp.route('/messanger')
+@login_required
+def messanger():
+    users_to_ids = db.session.query(Message.user_to_id).filter(user_from_id=current_user.id)

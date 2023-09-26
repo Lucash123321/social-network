@@ -9,7 +9,7 @@
             <li>
                 <a href="{{ url_for('posts.follow', username=user.username) }}" class="follow-button">Подписаться</a>
             </li>
-            {% elif current_user.is_authenticated %}
+            {% elif current_user.id != user.id and current_user.is_authenticated %}
             <li>
                 <a href="{{ url_for('posts.unfollow', username=user.username) }}" class="follow-button">Отписаться</a>
             </li>

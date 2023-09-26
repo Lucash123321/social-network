@@ -26,7 +26,6 @@ body{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
     box-sizing: border-box;
     border-bottom: 1px solid black;
     padding-right: 20px;
@@ -62,44 +61,71 @@ body{
 
 .main-page{
     display: grid;
-    grid-template-columns: 200px auto;
-    min-height: calc(100vh - 207px);
+    grid-template-columns: 200px 650px;
+    min-height: calc(100vh - 177px);
     background-color: #f5f5f5;
 }
 
 .left-menu{
+    margin-top: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     text-decoration: none;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    height: fit-content;
+    border-radius: 10px;
 }
 
 .left-menu-item{
     list-style-type:none;
-    padding: 5px;
-    margin: 5px;
-    margin-bottom: 5px;
-    padding-left: 50px;
+    padding: 3px;
     border-radius: 5px;
+    padding-right: 10px;
+    padding-left: 15px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .left-menu-item:hover{
-    background-color: white;
+    background-color: #00000020;
 }
 
 .form-background{
     padding: 30px;
     padding-left: 50px;
     padding-right: 50px;
-    background-color: blue;
+    background-color: white;
     margin: auto;
-    color: white;
-    border: 1px solid black;
-    border-radius: 30px;
+    color: back;
+    border-radius: 10px;
+    font-size: 25px;
+    box-shadow: 3px 5px 18px 0.2em #00000042;
 }
 
-.input-box input{
+.input-box input[type="text"], input[type="password"], input[type="email"]{
     width: 500px;
     height: 40px;
     border-radius: 10px;
-    padding: 5px;
+    border: 0px;
+    padding-top: 2px;
+    padding-left: 8px;
+    font-size: 20px;
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+    background-color: #0000000a;
+}
+
+.input-box input::placeholder{
+    opacity: 0.5;
+    color: grey;
+}
+
+.form-page{
+    background: linear-gradient(to bottom left, #5c5cff, #8f8fff, #b84dff);
+    background-color: #5c5cff;
 }
 
 .input-box textarea{
@@ -108,24 +134,42 @@ body{
     height: 200px;
     border-radius: 10px;
     padding: 5px;
+    padding-left: 8px;
+    font-size: 20px;
+    border: 0px;
+    background-color: #0000000a;
+}
+
+.input-box textarea::placeholder{
+    opacity: 0.5;
+    color: grey;
 }
 
 .form-buttons{
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+    font-size: 24px;
 }
 
 .cancel-button{
-    width: 150px;
-    height: 25px;
+    width: 100px;
+    height: 50px;
+    border: 0px;
     border-radius: 5px;
+    background-color: #5c5cff;
+    color: white;
+    font-size: 20px;
 }
 
 .submit-button{
-    width: 250px;
-    height: 25px;
+    width: 200px;
+    height: 50px;
+    border: 0px;
     border-radius: 5px;
+    background-color: #5c5cff;
+    color: white;
+    font-size: 20px;
 }
 
 .posts{
@@ -136,7 +180,9 @@ body{
     background-color: white;
     margin: 10px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
+    width: 600px;
+    height: min-content;
 }
 
 .href{
@@ -151,13 +197,13 @@ body{
 }
 
 .post-title{
-    word-break: break-all;
+    word-wrap: break-word;
     font-size: 50px;
     text-align: center;
 }
 
 .post-text{
-    word-break: break-all;
+    word-wrap: break-word;;
 }
 
 .form-error{
@@ -165,8 +211,8 @@ body{
 }
 
 .main-page-post-title{
-    word-break: break-all;
-    font-size: 20px;
+    word-wrap: break-word;;
+    font-size: 36px;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -210,4 +256,38 @@ body{
     color: white;
     border-radius: 5px;
     text-decoration: none;
+}
+
+.page-title{
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.left-menu-item-img{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.left-menu-item-chosen{
+    list-style-type:none;
+    padding: 3px;
+    border-radius: 5px;
+    padding-right: 10px;
+    padding-left: 15px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #00000020;
+}
+
+.message-form-container{
+    grid-column: 2 / 3;
 }

@@ -7,18 +7,59 @@
 </head>
 <body>
 {% include "includes/header.html" %}
-<main>
+<main class="main">
     <div class="main-page">
         <div class="left-menu">
             <ul class="left-menu-list">
-                <li class="left-menu-item">
+                {% if user and current_user.id == user.id %}
+                <li class="left-menu-item-chosen">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/profile.png') }}">
                     <a class="href" href="{{ url_for('posts.profile', username=current_user.username) }}">Профиль</a>
                 </li>
-                <li class="left-menu-item">Сообщения</li>
+                {% elif current_user.is_anonymous %}
                 <li class="left-menu-item">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/profile.png') }}">
+                    <a class="href" href="{{ url_for('users.login') }}">Профиль</a>
+                </li>
+                {% else %}
+                <li class="left-menu-item">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/profile.png') }}">
+                    <a class="href" href="{{ url_for('posts.profile', username=current_user.username) }}">Профиль</a>
+                </li>
+                {% endif %}
+                {% if messanger %}
+                <li class="left-menu-item-chosen">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/messanger.png') }}">
+                    <a class="href">Сообщения</a>
+                </li>
+                {% else %}
+                <li class="left-menu-item">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/messanger.png') }}">
+                    <a class="href">Сообщения</a>
+                </li>
+                {% endif %}
+                {% if main %}
+                <li class="left-menu-item-chosen">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/news.png') }}">
                     <a href="/" class="href">Лента новостей</a>
                 </li>
-                <li class="left-menu-item">Подписки</li>
+                {% else %}
+                <li class="left-menu-item">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/news.png') }}">
+                    <a href="/" class="href">Лента новостей</a>
+                </li>
+                {% endif %}
+                {% if followings %}
+                <li class="left-menu-item-chosen">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/speaker.png') }}">
+                    <a class="href" href="{{ url_for('posts.followings') }}">Подписки</a>
+                </li>
+                {% else %}
+                <li class="left-menu-item">
+                    <img class="left-menu-item-img" src="{{ url_for('static', filename='img/speaker.png') }}">
+                    <a class="href" href="{{ url_for('posts.followings') }}">Подписки</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
         {% block content %}
