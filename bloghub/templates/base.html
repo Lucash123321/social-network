@@ -30,12 +30,12 @@
                 {% if messanger %}
                 <li class="left-menu-item-chosen">
                     <img class="left-menu-item-img" src="{{ url_for('static', filename='img/messanger.png') }}">
-                    <a class="href">Сообщения</a>
+                    <a class="href" href="{{ url_for('posts.messanger') }}">Сообщения</a>
                 </li>
                 {% else %}
                 <li class="left-menu-item">
                     <img class="left-menu-item-img" src="{{ url_for('static', filename='img/messanger.png') }}">
-                    <a class="href">Сообщения</a>
+                    <a class="href" href="{{ url_for('posts.messanger') }}">Сообщения</a>
                 </li>
                 {% endif %}
                 {% if main %}

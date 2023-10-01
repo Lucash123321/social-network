@@ -1,9 +1,10 @@
 from flask import render_template, request, Blueprint, url_for, redirect, abort
-from posts.forms import PostForm, MessageForm
-from posts.models import Post, Follow, Message
+from posts.forms import PostForm, MessageForm, CommentForm
+from posts.models import Post, Follow, Message, Comment
 from users.models import User
 from database import db
 from flask_login import current_user, login_required
+import time
 
 posts_bp = Blueprint("posts", __name__, template_folder="../templates/posts")
 
@@ -45,11 +46,15 @@ def create_post():
 
 @posts_bp.route("/view-post/<int:post_id>")
 def view_post(post_id):
-    post = Post.query.filter_by(id=post_id)
-    if not list(post):
+    form = CommentForm()
+    post = Post.query.filter_by(id=post_id).first()
+
+    if not post:
         return abort(404)
-    post = post.first()
-    return render_template("post.html", post=post)
+
+    comments = Comment.query.filter_by(post_id=post.id)
+
+    return render_template("post.html", post=post, form=form, comments=comments)
 
 
 @posts_bp.route("/<username>")
@@ -90,12 +95,10 @@ def follow(username):
 @posts_bp.route("/<username>/unfollow")
 @login_required
 def unfollow(username):
-    user = User.query.filter_by(username=username)
+    user = User.query.filter_by(username=username).first()
 
-    if not list(user):
+    if user:
         return abort(404)
-
-    user = user.first()
 
     Follow.query.filter_by(user_id=user.id, follower_id=current_user.id).delete()
     db.session.commit()
@@ -139,12 +142,48 @@ def chat(username):
     if not user_to:
         return abort(404)
 
-    messages = Message.query.filter_by(user_to_id=user_to.id, user_from_id=current_user.id)
+    messages = db.session.query(Message).filter(
+        (Message.user_to_id == user_to.id) & (Message.user_from_id == current_user.id) |
+        (Message.user_to_id == current_user.id) & (Message.user_from_id == user_to.id))
 
-    return render_template("chat.html", messages=messages, username=username, form=form)
+    return render_template("chat.html", messages=messages, username=username, form=form, messanger=True)
 
 
 @posts_bp.route('/messanger')
 @login_required
 def messanger():
-    users_to_ids = db.session.query(Message.user_to_id).filter(user_from_id=current_user.id)
+    subquery = db.session.query(Message).filter((Message.user_to_id == current_user.id) |
+                                                (Message.user_from_id == current_user.id))
+    subquery = subquery.order_by(Message.time.desc()).cte()
+    left_table = db.session.query(subquery).group_by(subquery.c.user_from_id, subquery.c.user_to_id).cte()
+    right_table = db.session.query(subquery).group_by(subquery.c.user_from_id, subquery.c.user_to_id).cte()
+
+    resulted_table = db.session.query(left_table.c.id).outerjoin(right_table,
+                                                            (right_table.c.user_to_id == left_table.c.user_from_id) &
+                                                            (right_table.c.user_from_id == left_table.c.user_to_id))
+
+    resulted_table = resulted_table.filter(right_table.c.time.is_(None) |
+                                           (left_table.c.time >= right_table.c.time))
+
+    last_messages = Message.query.filter(Message.id.in_(resulted_table)).order_by(Message.time.desc())
+
+    return render_template("messanger.html", last_messages=last_messages, messanger=True)
+
+
+@posts_bp.route('/view-post/<int:post_id>/comment', methods=['POST', 'GET'])
+@login_required
+def send_comment(post_id):
+    post = User.query.filter_by(id=post_id).first()
+
+    if not post:
+        return abort(404)
+
+    if request.method == 'POST':
+        if request.form.get('text'):
+            message = Comment(user_id=current_user.id,
+                              post_id=post.id,
+                              text=request.form.get('text'))
+            db.session.add(message)
+            db.session.commit()
+
+    return redirect(url_for('posts.view_post', post_id=post.id))

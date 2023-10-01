@@ -13,8 +13,8 @@ def register():
     form = RegistrationForm()
     if request.method == "POST":
 
-        if not list(User.query.filter_by(username=request.form.get('username'))) and \
-                not list(User.query.filter_by(email=request.form.get('email'))):
+        if not User.query.filter_by(username=request.form.get('username')).first() and \
+                not User.query.filter_by(email=request.form.get('email')).first():
 
             password = generate_password_hash(request.form.get('password'))
 
@@ -29,12 +29,12 @@ def register():
 
         else:
 
-            if list(User.query.filter_by(username=request.form.get('username'))):
+            if User.query.filter_by(username=request.form.get('username')).first():
                 current_field_errors = list(form.username.errors)
                 current_field_errors.append("Это имя пользователя уже используется.")
                 form.username.errors = current_field_errors
 
-            if list(User.query.filter_by(email=request.form.get('email'))):
+            if User.query.filter_by(email=request.form.get('email')).first():
                 current_field_errors = list(form.email.errors)
                 current_field_errors.append("Эта почта уже зарегистрирована.")
                 form.email.errors = current_field_errors
@@ -50,7 +50,7 @@ def login():
 
         user = User.query.filter_by(username=request.form.get('username')).first()
 
-        if list(User.query.filter_by(username=request.form.get('username'), )) and \
+        if User.query.filter_by(username=request.form.get('username')).first() and \
                 check_password_hash(user.password, request.form.get('password')):
             login_user(user)
             return redirect(url_for('posts.index'))

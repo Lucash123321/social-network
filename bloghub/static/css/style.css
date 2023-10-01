@@ -289,5 +289,42 @@ body{
 }
 
 .message-form-container{
-    grid-column: 2 / 3;
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+.comments-container{
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+.chats{
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.chat{
+    display: grid;
+    grid-template-columns: 70px auto;
+    margin-bottom: 10px;
+    background-color: white;
+    height: 50px;
+    border-radius: 15px;
+    padding: 5px;
+    padding-left: 12px;
+}
+
+.chat-picture{
+    width: 50px;
+    height: 50px;
+    clip-path: circle();
+}
+
+.message-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.message-time{
+    margin-top: 5px;
+    color: grey;
+    font-size: 12px;
 }

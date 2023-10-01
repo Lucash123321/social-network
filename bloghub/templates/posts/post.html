@@ -10,4 +10,46 @@
     </div>
     <div class="post-text">{{ post.text }}</div>
 </div>
+<div class="comments-container">
+    <form method="POST" action="{{ url_for('posts.send_comment', post_id=post.id) }}" enctype="multipart/form-data"
+          class="message-form">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+        <div class="input-box">
+            {% if field.widget.input_type != 'hidden' %}
+            <div class="field">{{ field }}</div>
+            {% endif %}
+            {% if field.errors %}
+            {% for error in field.errors %}
+            <div class="form-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="non-field-errors">
+            {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <div class="form-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="submit-button">Отправить</button>
+        </div>
+    </form>
+    <div class="comments">
+        {% for comment in comments %}
+        <div class="comment">
+            <div class="comment-header">
+                {{ comment.user.username }}
+                {{ comment.time }}
+            </div>
+            <div class="comment-text">
+                {{ comment.text }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

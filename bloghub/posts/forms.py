@@ -11,5 +11,9 @@ class PostForm(FlaskForm):
 
 
 class MessageForm(FlaskForm):
-    text = wtforms.TextAreaField("Текст", render_kw={"placeholder": "Текст"})
+    text = wtforms.TextAreaField("Текст", render_kw={"placeholder": "Текст сообщения"})
+
+
+class CommentForm(FlaskForm):
+    text = wtforms.TextAreaField("Текст", render_kw={"placeholder": "Текст комментария"})
 
