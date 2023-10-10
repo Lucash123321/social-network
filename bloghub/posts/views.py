@@ -97,7 +97,7 @@ def follow(username):
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
 
-    if user:
+    if not user:
         return abort(404)
 
     Follow.query.filter_by(user_id=user.id, follower_id=current_user.id).delete()

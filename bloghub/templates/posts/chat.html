@@ -1,20 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="messages">
 {% for message in messages %}
-    {{ message.time }}
-    {{ message.user_from.username }}
-    {{ message.user_to.username }}
-    {{ message.text}}
+    {% if current_user.username == message.user_from.username %}
+    <div class="current-user-message">
+        <div class="message-header">
+            <div class="message-user-info">
+                <div>
+                    <img class="message-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                </div>
+                <div class="message-user-info-username">{{ message.user_from.username }}</div>
+            </div>
+            <div class="current-user-message-time">{{ message.time }}</div>
+        </div>
+        <div class="message-text">
+            {{ message.text}}
+        </div>
+    </div>
+    {% else %}
+    <div class="message">
+        <div class="message-header">
+            <div class="message-user-info">
+                <div>
+                    <img class="message-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                </div>
+                <div class="message-user-info-username">{{ message.user_from.username }}</div>
+            </div>
+            <div class="message-time">{{ message.time }}</div>
+        </div>
+        <div class="message-text">
+            {{ message.text}}
+        </div>
+    </div>
+    {% endif %}
 {% endfor %}
+</div>
 <div class="message-form-container">
     <form method="POST" action="{{ url_for('posts.send_message', username=username) }}" enctype="multipart/form-data"
           class="message-form">
         {{ form.csrf_token }}
         {{ form.hidden_tag() }}
         {% for field in form %}
-        <div class="input-box">
+        <div class="message-input-box">
             {% if field.widget.input_type != 'hidden' %}
-            <div class="field">{{ field }}</div>
+            <div class="message-field">{{ field }}</div>
             {% endif %}
             {% if field.errors %}
             {% for error in field.errors %}
@@ -30,8 +59,8 @@
             {% endfor %}
             {% endif %}
         </div>
-        <div class="form-buttons">
-            <button type="submit" class="submit-button">Отправить</button>
+        <div class="message-buttons">
+            <button type="submit" class="message-submit-button">Отправить</button>
         </div>
     </form>
 </div>

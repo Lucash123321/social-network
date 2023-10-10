@@ -2,23 +2,26 @@
 {% block content %}
 <div class="post">
     <div class="post-title">{{ post.title }}</div>
-    <div class="post-header">
-        <a class="profile-href" href="{{ url_for('posts.profile', username=post.user.username) }}">
-            <div>{{ post.user.username }}</div>
+    <a class="profile-href" href="{{ url_for('posts.profile', username=post.user.username) }}">
+        <div class="post-header">
+            <div class="post-profile-info">
+                <img class="post-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                <div class="post-profile-username">{{ post.user.username }}</div>
+            </div>
             <div>{{ post.time }}</div>
-        </a>
-    </div>
+        </div>
+    </a>
     <div class="post-text">{{ post.text }}</div>
 </div>
 <div class="comments-container">
     <form method="POST" action="{{ url_for('posts.send_comment', post_id=post.id) }}" enctype="multipart/form-data"
-          class="message-form">
+          class="comment-form">
         {{ form.csrf_token }}
         {{ form.hidden_tag() }}
         {% for field in form %}
-        <div class="input-box">
+        <div class="comment-input-box">
             {% if field.widget.input_type != 'hidden' %}
-            <div class="field">{{ field }}</div>
+            <div class="comment-field">{{ field }}</div>
             {% endif %}
             {% if field.errors %}
             {% for error in field.errors %}
@@ -35,7 +38,7 @@
             {% endif %}
         </div>
         <div class="form-buttons">
-            <button type="submit" class="submit-button">Отправить</button>
+            <button type="submit" class="comment-submit-button">Отправить</button>
         </div>
     </form>
     <div class="comments">

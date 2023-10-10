@@ -7,33 +7,31 @@
     {% else %}
     <a class="href" href="{{ url_for('posts.chat', username=last_message.user_to.username) }}">
     {% endif %}
-
-    <div class="chat">
-        <div>
-            <img class="chat-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
-        </div>
-        <div>
-            <div class="message-header">
-                <div>
-                    {% if last_message.user_from.username != current_user.username %}
-                    {{ last_message.user_from.username }}
+        <div class="chat">
+            <div>
+                <img class="chat-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+            </div>
+            <div>
+                <div class="message-header">
+                    <div>
+                        {% if last_message.user_from.username != current_user.username %}
+                        {{ last_message.user_from.username }}
+                        {% else %}
+                        {{ last_message.user_to.username }}
+                        {% endif %}
+                    </div>
+                    <div class="message-time">{{ last_message.time }}</div>
+                </div>
+                <div class="message-info">
+                    {% if last_message.text|length > 40 %}
+                    {{ last_message.user_from.username }}: {{ last_message.text[:40] }}...
                     {% else %}
-                    {{ last_message.user_to.username }}
+                    {{ last_message.user_from.username }}: {{ last_message.text }}
                     {% endif %}
                 </div>
-                <div class="message-time">{{ last_message.time }}</div>
             </div>
-            <div class="message-info">
-                {% if last_message.text|length > 40 %}
-                {{ last_message.user_from.username }}: {{ last_message.text[:40] }}...
-                {% else %}
-                {{ last_message.user_from.username }}: {{ last_message.text }}
-                {% endif %}
-            </div>
-
         </div>
-    </div>
-</a>
+    </a>
     {% endfor %}
 </div>
 {% endblock %}
