@@ -4,9 +4,10 @@ from wtforms.validators import Length, NumberRange
 
 
 class RegistrationForm(FlaskForm):
-    username = wtforms.StringField("Имя пользователя", validators=[Length(min=3, max=100)])
-    email = wtforms.EmailField("Почта")
-    password = wtforms.PasswordField("Пароль")
+    username = wtforms.StringField("Имя пользователя", validators=[Length(min=3, max=100)],
+                                render_kw={"placeholder": "Логин"})
+    email = wtforms.EmailField("Почта", render_kw={"placeholder": "Электронная почта"})
+    password = wtforms.PasswordField("Пароль", render_kw={"placeholder": "Ваш пароль"})
 
 
 class LoginForm(FlaskForm):
