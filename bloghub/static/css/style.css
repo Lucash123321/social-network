@@ -13,6 +13,7 @@ body{
 
 .menu{
     display: flex;
+    justify-content: right;
     list-style: none;
 }
 
@@ -25,14 +26,16 @@ body{
     background-color: #5c5cff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: right;
     box-sizing: border-box;
     border-bottom: 1px solid black;
     padding-right: 20px;
+    width: 100vw;
 }
 
 .menu li{
-    margin-left: 50px;
+    margin-left: 30px;
+    white-space: nowrap
 }
 
 .menu li a{
@@ -252,6 +255,7 @@ body{
 }
 
 .follow-button{
+    line-height: 35px;
     padding: 5px;
     background-color: blue;
     color: white;
@@ -466,4 +470,16 @@ body{
     font-size: 20px;
     margin-left: 411px;
     margin-bottom: 5px;
+}
+
+.title{
+    display: flex;
+    justify-content: left;
+    width: 100vw;
+    padding-top: 5px;
+}
+
+.navigation{
+    display: flex;
+    justify-content: right;
 }

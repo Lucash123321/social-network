@@ -173,7 +173,7 @@ def messanger():
 @posts_bp.route('/view-post/<int:post_id>/comment', methods=['POST', 'GET'])
 @login_required
 def send_comment(post_id):
-    post = User.query.filter_by(id=post_id).first()
+    post = Post.query.filter_by(id=post_id).first()
 
     if not post:
         return abort(404)

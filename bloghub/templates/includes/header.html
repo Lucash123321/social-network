@@ -1,15 +1,17 @@
 <header class="page-header">
-    <a href="/">
-        <img src="" width="400" height="45">
-    </a>
-    <nav>
+    <div class="title">
+        <a href="/">
+            <img src="{{ url_for('static', filename='img/bloghub.png') }}" width="400" height="45">
+        </a>
+    </div>
+    <nav class="navigation">
         <ul class="menu">
             {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('posts.create_post') }}">Создать пост</a></li>
-                <li><a href="{{ url_for('users.logout') }}">Выйти</a></li>
+            <li><a href="{{ url_for('posts.create_post') }}">Создать пост</a></li>
+            <li><a href="{{ url_for('users.logout') }}">Выйти</a></li>
             {% else %}
-                <li><a href="{{ url_for('users.login') }}">Войти</a></li>
-                <li><a href="{{ url_for('users.register') }}">Зарегистрироваться</a></li>
+            <li><a href="{{ url_for('users.login') }}">Войти</a></li>
+            <li><a href="{{ url_for('users.register') }}">Зарегистрироваться</a></li>
             {% endif %}
         </ul>
     </nav>

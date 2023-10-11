@@ -5,6 +5,13 @@
         <ul>
             <li><img class="profile-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}"></li>
             <li>{{ user.username }}</li>
+            {% if current_user.id != user.id %}
+            <li>
+                <a href="{{ url_for('posts.send_message', username=user.username) }}" class="follow-button">
+                    Написать сообщение
+                </a>
+            </li>
+            {% endif %}
             {% if current_user.id != user.id and current_user.is_authenticated and not already_follow %}
             <li>
                 <a href="{{ url_for('posts.follow', username=user.username) }}" class="follow-button">Подписаться</a>
