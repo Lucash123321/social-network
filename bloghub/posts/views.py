@@ -13,7 +13,7 @@ TEMPLATE_DIR = "posts/"
 
 @posts_bp.route("/")
 def index():
-    posts = list(Post.query.all())[::-1]
+    posts = Post.query.order_by(Post.id.desc()).all()
     return render_template("index.html", posts=posts, main=True)
 
 
@@ -59,15 +59,14 @@ def view_post(post_id):
 
 @posts_bp.route("/<username>")
 def profile(username):
-    user = User.query.filter_by(username=username)
-    if not list(user):
+    user = User.query.filter_by(username=username).first()
+    if not user:
         return abort(404)
 
-    user = user.first()
     posts = Post.query.filter_by(user=user)
 
     if current_user.is_authenticated:
-        already_follow = bool(list(Follow.query.filter_by(user_id=user.id, follower_id=current_user.id)))
+        already_follow = bool(Follow.query.filter_by(user_id=user.id, follower_id=current_user.id).all())
     else:
         already_follow = False
 
@@ -77,12 +76,12 @@ def profile(username):
 @posts_bp.route("/<username>/follow")
 @login_required
 def follow(username):
-    user = User.query.filter_by(username=username)
-    if not list(user):
+    user = User.query.filter_by(username=username).first()
+
+    if not user:
         return abort(404)
 
-    user = user.first()
-    if current_user.id == user.id or list(Follow.query.filter_by(user_id=user.id, follower_id=current_user.id)):
+    if current_user.id == user.id or Follow.query.filter_by(user_id=user.id, follower_id=current_user.id).first():
         return abort(403)
 
     follow = Follow(user_id=user.id, follower_id=current_user.id)
@@ -110,7 +109,7 @@ def unfollow(username):
 @login_required
 def followings():
     followings = db.session.query(Follow.user_id).filter_by(follower_id=current_user.id)
-    posts = list(db.session.query(Post).filter(Post.user_id.in_(followings)))[::-1]
+    posts = db.session.query(Post).order_by(Post.id.desc()).filter(Post.user_id.in_(followings))
     return render_template("index.html", posts=posts, followings=True)
 
 
