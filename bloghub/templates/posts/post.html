@@ -5,7 +5,11 @@
     <a class="profile-href" href="{{ url_for('posts.profile', username=post.user.username) }}">
         <div class="post-header">
             <div class="post-profile-info">
+                {% if post.user.image %}
+                <img class="post-picture" src="{{ url_for('media', filename=post.user.image) }}">
+                {% else %}
                 <img class="post-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                {% endif %}
                 <div class="post-profile-username">{{ post.user.username }}</div>
             </div>
             <div>{{ post.time }}</div>

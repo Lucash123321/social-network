@@ -3,7 +3,13 @@
 <div class="profile-page">
     <div class="profile-header">
         <ul>
-            <li><img class="profile-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}"></li>
+            <li>
+                {% if user.image %}
+                <img class="profile-picture" src="{{ url_for('media', filename=user.image) }}">
+                {% else %}
+                <img class="profile-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                {% endif %}
+            </li>
             <li>{{ user.username }}</li>
             {% if current_user.id != user.id %}
             <li>

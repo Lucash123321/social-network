@@ -4,7 +4,6 @@ from posts.models import Post, Follow, Message, Comment
 from users.models import User
 from database import db
 from flask_login import current_user, login_required
-import time
 
 posts_bp = Blueprint("posts", __name__, template_folder="../templates/posts")
 

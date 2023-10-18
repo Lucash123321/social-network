@@ -8,6 +8,7 @@ class RegistrationForm(FlaskForm):
                                 render_kw={"placeholder": "Логин"})
     email = wtforms.EmailField("Почта", render_kw={"placeholder": "Электронная почта"})
     password = wtforms.PasswordField("Пароль", render_kw={"placeholder": "Ваш пароль"})
+    image = wtforms.FileField("Изображение")
 
 
 class LoginForm(FlaskForm):

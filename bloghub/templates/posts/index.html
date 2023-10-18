@@ -7,7 +7,11 @@
             <div class="main-page-post-title">{{ post.title }}</div>
             <div class="post-header">
                 <div class="post-profile-info">
+                    {% if post.user.image %}
+                    <img class="post-picture" src="{{ url_for('media', filename=post.user.image) }}">
+                    {% else %}
                     <img class="post-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                    {% endif %}
                     <div class="post-profile-username">{{ post.user.username }}</div>
                 </div>
                 <div class="post-time">{{ post.time }}</div>

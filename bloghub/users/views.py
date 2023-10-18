@@ -4,6 +4,9 @@ from .models import User
 from database import db
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import os
+from bloghub import settings
 
 users_bp = Blueprint("users", __name__, template_folder="../templates/users")
 
@@ -21,6 +24,15 @@ def register():
             user = User(username=request.form.get('username'),
                         email=request.form.get('email'),
                         password=password)
+
+            if request.files:
+                image = request.files['image']
+                filename = secure_filename(image.filename)
+                path = os.path.join(settings.UPLOAD_FOLDER, 'profile_pictures')
+                os.makedirs(path, exist_ok=True)
+                path = os.path.join(path, filename)
+                image.save(path)
+                user.image = os.path.join('profile_pictures', filename)
 
             db.session.add(user)
             db.session.commit()

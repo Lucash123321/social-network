@@ -7,7 +7,11 @@
         <div class="message-header">
             <div class="message-user-info">
                 <div>
+                    {% if message.user_from.image %}
+                    <img class="message-picture" src="{{ url_for('media', filename=message.user_from.image) }}">
+                    {% else %}
                     <img class="message-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                    {% endif %}
                 </div>
                 <div class="message-user-info-username">{{ message.user_from.username }}</div>
             </div>
@@ -22,7 +26,11 @@
         <div class="message-header">
             <div class="message-user-info">
                 <div>
+                    {% if message.user_from.image %}
+                    <img class="message-picture" src="{{ url_for('media', filename=message.user_from.image) }}">
+                    {% else %}
                     <img class="message-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                    {% endif %}
                 </div>
                 <div class="message-user-info-username">{{ message.user_from.username }}</div>
             </div>

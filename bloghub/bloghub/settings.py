@@ -3,6 +3,10 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_PATH = os.path.join(BASE_DIR, 'static')
+MEDIA = 'media'
+UPLOAD_FOLDER = os.path.join(BASE_DIR, MEDIA)
+
 DEBUG = True
 
 

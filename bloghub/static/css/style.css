@@ -309,13 +309,13 @@ body{
 
 .chat{
     display: grid;
-    grid-template-columns: 70px auto;
+    grid-template-columns: 57px auto;
     margin-bottom: 10px;
     background-color: white;
     height: 50px;
     border-radius: 15px;
     padding: 5px;
-    padding-left: 12px;
+    padding-left: 7px;
 }
 
 .chat-picture{

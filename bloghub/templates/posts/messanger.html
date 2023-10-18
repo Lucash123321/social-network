@@ -9,7 +9,11 @@
     {% endif %}
         <div class="chat">
             <div>
+                {% if last_message.user_from.image %}
+                <img class="chat-picture" src="{{ url_for('media', filename=last_message.user_from.image) }}">
+                {% else %}
                 <img class="chat-picture" src="{{ url_for('static', filename='img/no-pic.jpg') }}">
+                {% endif %}
             </div>
             <div>
                 <div class="message-header">
