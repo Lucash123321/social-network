@@ -8,11 +8,13 @@ from database import db
 from users.models import User
 from posts.views import posts_bp
 from users.views import users_bp
+from about.views import about_bp
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.register_blueprint(posts_bp)
 app.register_blueprint(users_bp)
 app.register_blueprint(context)
+app.register_blueprint(about_bp)
 app.config.from_object(settings.Config)
 app.config['UPLOAD_FOLDER'] = settings.UPLOAD_FOLDER
 db.init_app(app)

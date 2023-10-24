@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="techs">
+    <div class="techs-text">
+        В создании сайта использовался язык программирования Python, а именно - фреймворк Flask, а также язык
+        гипертекстовой
+        разметки HTML5, язык таблиц стилей CSS3:
+    </div>
+    <div class="techs-images">
+        <img class="tech-image" src="{{ url_for('static', filename='img/techs/python.jpg') }}" height="100" width="100">
+        <img class="tech-image" src="{{ url_for('static', filename='img/techs/flask.png') }}" height="100" width="250">
+        <img class="tech-image" src="{{ url_for('static', filename='img/techs/html.jpg') }}" height="100" width="100">
+        <img class="tech-image" src="{{ url_for('static', filename='img/techs/css.jpg') }}" height="100" width="70">
+    </div>
+</div>
+{% endblock %}

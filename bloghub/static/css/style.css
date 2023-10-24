@@ -483,3 +483,16 @@ body{
     display: flex;
     justify-content: right;
 }
+
+.techs-images{
+    width 600px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.techs-text{
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
