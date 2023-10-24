@@ -1,5 +1,5 @@
 <div class="footer">
-    <div><a class="link" href="">Об авторе</a></div>
-    <div><a class="link" href="">Технологии</a></div>
+    <div><a class="link" href="{{ url_for('about.author') }}">Об авторе</a></div>
+    <div><a class="link" href="{{ url_for('about.techs') }}">Технологии</a></div>
     <div>Социальная сеть Bloghub © {{ now.year }}, все права защищены.</div>
 </div>

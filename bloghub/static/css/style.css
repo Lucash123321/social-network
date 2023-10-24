@@ -496,3 +496,14 @@ body{
     padding-left: 10px;
     padding-bottom: 10px;
 }
+
+.about-author{
+    padding-top: 10px;
+    padding-left: 10px;
+    display: grid;
+    grid-template-columns: 400px 200px;
+}
+
+.about-author-text{
+    margin-right: 10px;
+}

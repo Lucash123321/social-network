@@ -62,7 +62,7 @@ def profile(username):
     if not user:
         return abort(404)
 
-    posts = Post.query.filter_by(user=user)
+    posts = Post.query.filter_by(user=user).order_by(Post.id.desc())
 
     if current_user.is_authenticated:
         already_follow = bool(Follow.query.filter_by(user_id=user.id, follower_id=current_user.id).all())
